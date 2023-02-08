@@ -10,7 +10,7 @@
 // Find the Elf carrying the most Calories. How many total Calories is that Elf carrying?
   
 // first try:
-const calories =[[1000,2000,3000], [4000], [5000, 6000], [7000,8000,9000], [10000]]
+// const calories =[[1000,2000,3000], [4000], [5000, 6000], [7000,8000,9000], [10000]]
 // const test = {
 //   0: [ 1, 2, 3 ],
 //   1: [ 4 ],
@@ -19,51 +19,65 @@ const calories =[[1000,2000,3000], [4000], [5000, 6000], [7000,8000,9000], [1000
 //   4: [ 10 ]
 // }
 
-function mostCaloriesElf(array){
-  //create variable to return
-  let mostCalories = 0;
-  //loop through array
-  for(let i=0; i<array.length; i++){
-    //grab inner arrays in variable
-    const innerArray = (array[i]);
-    //sum inner arrays
-    const innerArraySum = innerArray.reduce((a,b)=>a+b,0);
-    //if inner arrays sum is greater than mostCalories, update mostCalories
-    if(innerArraySum > mostCalories){
-      mostCalories = innerArraySum;
-    }
-  }
-  //return mostCalories
-  return mostCalories;
-}
-console.log(mostCaloriesElf(calories));
+const fs = require('fs');
 
-// second try:
-function mostCaloriesElf2(array){
-  //set mostCalories to 0
+fs.readFile('p1input.txt', 'utf8', (err, data) => {
+  const lines = data.split('\n')
+  // now you can process the data
+  //create large array to list all smaller arrays
+  let allElves = [];
+  //create an array to list current elf's calories
+  let currentElf = [];
+  //create most calories variable to return
   let mostCalories = 0;
-  //make object to return
-  let elfCaloriePair = {};
-  //change array to object with index-element as key-value pairs
-  const newObject = Object.assign({}, calories)
-  //loop through making a key-value pair of each pair in object
-  for(const [key, value] of Object.entries(newObject)){
-    //grab sum of the values
-    const valueArraySum = value.reduce((a,b)=>a+b,0);
-    //if the values sum is greater than mostCalories, update mostCalories, update elfCaloriePair
-    if(valueArraySum > mostCalories){
-      mostCalories = valueArraySum;
-      elfCaloriePair[key] = value
-      
-    }
-  }
-  //return most calories
-  // return mostCalories;
-  //return elfCaloriePair
-  return elfCaloriePair;
-}
-// console.log(mostCaloriesElf2(calories));
 
+  //loop through lines
+  for (const line of lines) {
+    //if the line length is not 0 
+    if(line.length !== 0){
+    //convert each line from string to integer
+    const numLine = parseInt(line);
+      //push the line to currentElf
+      currentElf.push(numLine);
+      //find the sum of currentElf
+      let sum = currentElf.reduce((a,b)=>a+b,0)
+      //if the sum is greater than mostCalories, assign sum to mostCalories
+      if(sum > mostCalories){
+        mostCalories = sum; 
+      }
+    //else when the line length is 0
+    }else{
+      //push currentElf to allElves
+      allElves.push(currentElf);
+      //make an empty array for the newElf
+      let newElf = [];
+      //assign the newElf to be currentElf
+      currentElf = newElf;
+    } 
+  }
+  // console.log(allElves)
+  console.log(mostCalories)
+})
+
+
+// function mostCaloriesElf(array){
+//   //create variable to return
+//   let mostCalories = 0;
+//   //loop through array
+//   for(let i=0; i<array.length; i++){
+//     //grab inner arrays in variable
+//     const innerArray = (array[i]);
+//     //sum inner arrays
+//     const innerArraySum = innerArray.reduce((a,b)=>a+b,0);
+//     //if inner arrays sum is greater than mostCalories, update mostCalories
+//     if(innerArraySum > mostCalories){
+//       mostCalories = innerArraySum;
+//     }
+//   }
+//   //return mostCalories
+//   return mostCalories;
+// }
+// console.log(mostCaloriesElf(calories));
 
 
 //practice manipulating arrays/objects:
